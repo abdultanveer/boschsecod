@@ -25,6 +25,7 @@
         <provider
             android:name=".contentproviders.ContactProvider"
             android:authorities="com.example.appa.provider"
+            android:enabled="true"
             android:exported="true" />
     </application>
 
