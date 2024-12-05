@@ -1,6 +1,7 @@
 package com.example.bosch2
 
 import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -9,15 +10,35 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.bosch2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var tvMain:TextView
-
+lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        tvMain = findViewById(R.id.textView)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        var view = binding.root
+        setContentView(view)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.btnStart.setOnClickListener { startMusicService() }
+        binding.btStop.setOnClickListener { stopMusicService() }
+    }
+
+    private fun stopMusicService() {
+        var msIntent = Intent(this,MusicService::class.java)
+        stopService(msIntent)
+    }
+
+    private fun startMusicService() {
+        var msIntent = Intent(this,MusicService::class.java)
+        msIntent.putExtra("url","https://musicdownload.com")
+        startService(msIntent)
     }
 
     fun insertContentProvider(view: View) {
