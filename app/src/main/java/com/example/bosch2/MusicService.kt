@@ -2,6 +2,7 @@ package com.example.bosch2
 
 import android.app.Service
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
 
@@ -16,6 +17,8 @@ class MusicService : Service() {
          super.onStartCommand(intent, flags, startId)
         var dataReceived = intent?.getStringExtra("url")
         Log.i(TAG,"service started--"+dataReceived)
+        var mplayer = MediaPlayer.create(this,R.raw.music)
+        mplayer.start()
 
         return START_STICKY
     }
