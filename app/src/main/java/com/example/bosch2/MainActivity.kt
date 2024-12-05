@@ -1,9 +1,12 @@
 package com.example.bosch2
 
+import android.content.ComponentName
 import android.content.ContentValues
 import android.content.Intent
+import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -13,8 +16,9 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.bosch2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var tvMain:TextView
-lateinit var binding: ActivityMainBinding
+    lateinit var additionService:AdditionService
+
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,9 +32,30 @@ lateinit var binding: ActivityMainBinding
         super.onStart()
         binding.btnStart.setOnClickListener { startMusicService() }
         binding.btStop.setOnClickListener { stopMusicService() }
+        binding.btnBind.setOnClickListener { bindAddService() }
+
     }
 
-    private fun stopMusicService() {
+    private fun bindAddService() {
+        var bindAddIntent = Intent(this,AdditionService::class.java)
+        bindService(bindAddIntent,serviceConn, BIND_AUTO_CREATE)//1
+    }
+
+    private val serviceConn = object : ServiceConnection {
+
+        override fun onServiceConnected(p0: ComponentName?, localBinder: IBinder?) {//3
+            val mylocalBinder = localBinder as AdditionService.LocalBinder
+              additionService = mylocalBinder.getService()//4
+            var sum = additionService.addNos(10,20)//6
+            binding.textView.text ="sum--"+sum //8
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+        }
+    }
+
+
+        private fun stopMusicService() {
         var msIntent = Intent(this,MusicService::class.java)
         stopService(msIntent)
     }
@@ -59,7 +84,7 @@ lateinit var binding: ActivityMainBinding
         cursor?.moveToLast()
         var name = cursor?.getColumnIndex("name")?.let { cursor.getString(it) }
         var phone = cursor?.getColumnIndex("phone")?.let { cursor.getString(it) }
-        tvMain.setText("name--"+ name+"-phone no is--"+phone)
+        binding.textView.setText("name--"+ name+"-phone no is--"+phone)
     }
 }
 
