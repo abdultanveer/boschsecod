@@ -88,19 +88,3 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-//
-//ContentResolver contentResolver = getContentResolver();
-//
-//// Query the ContentProvider in AppA
-//Cursor cursor = contentResolver.query(ContactContract.CONTENT_URI, null, null, null, null);
-//
-//if (cursor != null && cursor.moveToFirst()) {
-//    do {
-//        // Get data from cursor
-//        String name = cursor.getString(cursor.getColumnIndex(ContactContract.Contacts.COLUMN_NAME));
-//        String phone = cursor.getString(cursor.getColumnIndex(ContactContract.Contacts.COLUMN_PHONE));
-//        Log.d("Contact", "Name: " + name + ", Phone: " + phone);
-//    } while (cursor.moveToNext());
-//    cursor.close();
-//}
-//}
